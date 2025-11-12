@@ -396,7 +396,7 @@ const clearSales = () => {
       login, logout, register, fetchAllUsers, deleteUserFromAdmin,
       modal, closeModal, showAlert, showConfirm,
       addProduct, editProduct,
-      addSale, deleteSale, deleteProduct, clearSales, 
+      addSale, deleteSale, deleteProduct, clearSales, executeDeleteAllSales,
       updateSaleStatus,
       db // (NUEVO) Exponemos 'db' para el importador de Excel
     }}>
@@ -1253,7 +1253,7 @@ const NewSaleScreen = () => {
 };
 
 const HistoryScreen = () => {
-    const { sales, deleteSale, products, clearSales, updateSaleStatus, showAlert, showConfirm, currentUser } = useApp();
+    const { sales, deleteSale, products, clearSales, updateSaleStatus, showAlert, showConfirm, currentUser,executeDeleteAllSales } = useApp();
 
     const handleExport = () => {
         if (typeof window.XLSX === 'undefined') {
@@ -1321,7 +1321,7 @@ const HistoryScreen = () => {
             a.click();
             URL.revokeObjectURL(url);
 
-            showConfirm("Exportación exitosa. ¿Deseas borrar TODO el historial de ventas?", clearSales);
+            showConfirm("Exportación exitosa. ¿Deseas borrar TODO el historial de ventas?", executeDeleteAllSales);
         } catch (error) {
             console.error("Error al exportar:", error);
             showAlert(`Error al exportar: ${error.message}`);
