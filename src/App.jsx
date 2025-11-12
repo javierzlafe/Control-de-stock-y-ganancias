@@ -357,22 +357,30 @@ const AppProvider = ({ children }) => {
     }
   };
   
-  const clearSales = () => {
-    showConfirm("¿Seguro que quieres borrar TODO el historial de ventas?", async () => {
-      try {
-        const batch = writeBatch(db);
-        sales.forEach(sale => {
-            const saleRef = doc(getSalesCollection(), sale.id);
-            batch.delete(saleRef);
-        });
-        await batch.commit();
-        showAlert("Historial de ventas borrado.");
-      } catch (e) {
-        console.error("Error borrando historial: ", e);
-        showAlert("Error al borrar el historial.");
-      }
-    });
-  };
+ // 1. Función NUEVA: Solo borra (sin preguntar).
+  // Esta es la que usará el botón de Exportar.
+  const executeDeleteAllSales = async () => {
+    try {
+      const batch = writeBatch(db);
+      sales.forEach(sale => {
+          const saleRef = doc(getSalesCollection(), sale.id);
+          batch.delete(saleRef);
+      });
+      await batch.commit();
+      showAlert("Historial de ventas borrado.");
+    } catch (e) {
+      console.error("Error borrando historial: ", e);
+      showAlert("Error al borrar el historial.");
+    }
+};
+
+// 2. Función MODIFICADA: Pregunta y luego llama a la anterior.
+// Esta es la que usa el botón "Borrar Historial" del menú.
+const clearSales = () => {
+  showConfirm("¿Seguro que quieres borrar TODO el historial de ventas? NO SE PUEDE RECUPERAR", () => {
+      executeDeleteAllSales();
+  });
+};
   
   const updateSaleStatus = async (saleId, newStatus) => {
     try {
