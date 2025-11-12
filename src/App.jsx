@@ -571,7 +571,7 @@ const LoginScreen = () => {
                   onSubmit={handleRegister}
                 >
                   <div className="mb-3">
-                    <label className="form-label">Nombre de Usuario (Ej: 'btech' para admin)</label>
+                    <label className="form-label">Nombre de Usuario</label>
                     <input 
                       type="text" 
                       className="form-control form-control-lg" 
